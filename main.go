@@ -88,8 +88,12 @@ func do() error {
 				goto waitToRetry
 			}
 		}
+	waitToEnd:
+		if threads > 0 {
+			goto waitToEnd
+		}
 		csvTitle := netutils.DataToCsvTitleGenerater()
-		csvText := csvTitle
+		csvText := csvTitle + csvOutput
 		_, err := outfile.WriteString(csvText)
 		if err == nil {
 			fmt.Printf("完成")
