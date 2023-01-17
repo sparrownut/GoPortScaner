@@ -4,6 +4,7 @@ import (
 	"GoPortScaner/Global"
 	"fmt"
 	"strconv"
+	"time"
 )
 
 func CheckIpWithAllPort(ip string) string {
@@ -11,7 +12,7 @@ func CheckIpWithAllPort(ip string) string {
 	resCsvString := ""
 
 	for i := 0; i < 65536; i++ {
-		//time.Sleep(time.Duration(time.Nanosecond * 10))
+		time.Sleep(time.Duration(time.Nanosecond * 10))
 	wait:
 		if threads <= 4096 {
 			go func(host string, port string) {

@@ -51,7 +51,7 @@ func ScanOpenPort(host string, port string, checkN int) PortData {
 	res.Host = host
 	res.Port = port
 	for i := 0; i < checkN; i++ { // 扫描checkN次
-		dial, connecterr := net.DialTimeout("tcp", host+":"+port, time.Duration(1*time.Second)) // 超时3秒
+		dial, connecterr := net.DialTimeout("tcp", host+":"+port, time.Duration(5*time.Second)) // 超时3秒
 		if connecterr == nil && dial != nil {
 			//fmt.Printf("%v:%v开放", host, port)
 			defer func() { // 关闭
@@ -62,7 +62,7 @@ func ScanOpenPort(host string, port string, checkN int) PortData {
 
 			//res.TimeSub =
 			// 开放试图读取端口数据
-			_ = dial.SetReadDeadline(time.Now().Add(3 * time.Second))
+			_ = dial.SetReadDeadline(time.Now().Add(5 * time.Second))
 			buf := [512]byte{}
 			n, _ := dial.Read(buf[:])
 			readPortStringData := string(buf[:n])
