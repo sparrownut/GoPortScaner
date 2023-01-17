@@ -88,10 +88,10 @@ func do() error {
 				goto waitToRetry
 			}
 		}
-		//waitToEnd:
-		//	if threads > 0 {
-		//		goto waitToEnd
-		//	}
+	waitToEnd:
+		if threads > len(doList)/10 {
+			goto waitToEnd
+		}
 		csvTitle := netutils.DataToCsvTitleGenerater()
 		csvText := csvTitle + csvOutput
 		_, err := outfile.WriteString(csvText)
