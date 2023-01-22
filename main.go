@@ -4,6 +4,7 @@ import (
 	"GoPortScaner/Global"
 	"GoPortScaner/utils/netutils"
 	"GoPortScaner/utils/output"
+	"GoPortScaner/utils/systemutils"
 	"fmt"
 	"github.com/urfave/cli/v2"
 	"os"
@@ -16,7 +17,7 @@ func main() {
 		Name:      "GoPortScaner",
 		Usage:     "高性能端口扫描器 \n多次扫描 力保扫描准确性\n仅供授权的渗透测试使用 请遵守法律!", // 这里写协议
 		UsageText: "lazy to write...",
-		Version:   "0.1.9",
+		Version:   "0.2.2",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "InputFile", Aliases: []string{"F"}, Destination: &Global.INPUTFILE, Value: "list", Usage: "扫描输入文件", Required: true},
 			&cli.BoolFlag{Name: "DBG", Aliases: []string{"D"}, Destination: &Global.DBG, Value: false, Usage: "DBG MOD", Required: false},
@@ -40,6 +41,7 @@ func main() {
 	//fmt.Printf(os.Args[1])
 }
 func do() error {
+	systemutils.SetCpuWithMax()
 	//fmt.Printf(netutils.CheckIpWithAllPort("hk11.stuid-fish.co"))
 	outfile, _ := os.OpenFile(fmt.Sprintf("scanoutput_%v.csv", time.Now().Format("2006-01-02-15-04-05")), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	defer func(file *os.File) {

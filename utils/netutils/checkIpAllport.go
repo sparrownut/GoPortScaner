@@ -21,8 +21,11 @@ func CheckIpWithAllPort(ip string) string {
 				}
 				threads++
 				defer func() {
+					if r := recover(); r != nil {
+						threads--
+					}
 					if Global.DBG {
-						println(fmt.Sprintf("执行%v:%v完毕", host, port))
+						println(fmt.Sprintf("执行%v:%v完毕 当前线程%v", host, port, threads))
 					}
 					threads--
 				}()
@@ -36,7 +39,7 @@ func CheckIpWithAllPort(ip string) string {
 		}
 	}
 waitToEnd:
-	if threads > 0 {
+	if threads > 65536/100 {
 		goto waitToEnd
 	}
 	return resCsvString
