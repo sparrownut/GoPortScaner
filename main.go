@@ -17,7 +17,7 @@ func main() {
 		Name:      "GoPortScaner",
 		Usage:     "高性能端口扫描器 \n多次扫描 力保扫描准确性\n仅供授权的渗透测试使用 请遵守法律!", // 这里写协议
 		UsageText: "lazy to write...",
-		Version:   "0.2.3",
+		Version:   "0.2.5",
 		Flags: []cli.Flag{
 			&cli.StringFlag{Name: "InputFile", Aliases: []string{"F"}, Destination: &Global.INPUTFILE, Value: "list", Usage: "扫描输入文件", Required: true},
 			&cli.BoolFlag{Name: "DBG", Aliases: []string{"D"}, Destination: &Global.DBG, Value: false, Usage: "DBG MOD", Required: false},
