@@ -2,7 +2,6 @@ package netutils
 
 import (
 	"GoPortScaner/Global"
-	"fmt"
 	"strconv"
 	"time"
 )
@@ -16,22 +15,33 @@ func CheckIpWithAllPort(ip string) string {
 	wait:
 		if threads <= 4096 {
 			go func(host string, port string) {
-				if Global.DBG {
-					println(fmt.Sprintf("执行%v:%v中 当前线程%v", host, port, threads))
-				}
+				//if Global.DBG {
+				//	println(fmt.Sprintf("执行%v:%v中 当前线程%v", host, port, threads))
+				//}
 				threads++
 				defer func() {
 					if r := recover(); r != nil {
+						if Global.DBG {
+							println("ERR")
+						}
 						threads--
 					}
-					if Global.DBG {
-						println(fmt.Sprintf("执行%v:%v完毕 当前线程%v", host, port, threads))
-					}
+					//if Global.DBG {
+					//	println(fmt.Sprintf("执行%v:%v完毕 当前线程%v", host, port, threads))
+					//}
 					threads--
 				}()
 				resStr := PortDataToCsvString(ScanOpenPort(host, port, Global.CHECKN))
 				if resStr != "" {
 					resCsvString += resStr + "\n"
+				}
+				for {
+					select {
+					case <-time.After(Global.PORTTIMEOUT):
+						threads--
+						return
+
+					}
 				}
 			}(ip, strconv.Itoa(i))
 		} else { //线程超标回头等待
@@ -39,7 +49,7 @@ func CheckIpWithAllPort(ip string) string {
 		}
 	}
 waitToEnd:
-	if threads > 65536/100 {
+	if threads > 65536/1000 {
 		goto waitToEnd
 	}
 	return resCsvString
