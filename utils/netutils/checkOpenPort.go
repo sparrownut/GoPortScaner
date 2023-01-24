@@ -63,9 +63,10 @@ func ScanOpenPort(host string, port string, checkN int) PortData {
 			//res.TimeSub =
 			// 开放试图读取端口数据
 			_ = dial.SetReadDeadline(time.Now().Add(5 * time.Second))
-			buf := [512]byte{}
+			buf := [1024]byte{}
 			n, _ := dial.Read(buf[:])
 			readPortStringData := string(buf[:n])
+			readPortStringData = strings.ReplaceAll(readPortStringData, "\n", "") // 防止csv分割漏洞
 			readPortStringData = strings.ReplaceAll(readPortStringData, ",", "，") // 防止csv分割漏洞
 			if readPortStringData != "" {
 				res.CheckRes = append(res.CheckRes, PortDataSingle{ // 返回结果
