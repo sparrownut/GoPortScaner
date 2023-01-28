@@ -9,11 +9,20 @@ import (
 func CheckIpWithAllPort(ip string) string {
 	threads := 0
 	resCsvString := ""
-
-	for i := 0; i < 65536; i++ {
+	portStart := 0
+	portEnd := 65536
+	//println(Global.PORT)
+	if Global.PORT != 0 {
+		portStart = Global.PORT
+		portEnd = Global.PORT + 1
+	}
+	//println(portStart)
+	//println(portEnd)
+	for i := portStart; i < portEnd; i++ {
 		time.Sleep(time.Duration(time.Nanosecond * 10))
 	wait:
 		if threads <= 4096 {
+
 			go func(host string, port string) {
 				//if Global.DBG {
 				//	println(fmt.Sprintf("执行%v:%v中 当前线程%v", host, port, threads))
@@ -44,12 +53,14 @@ func CheckIpWithAllPort(ip string) string {
 					}
 				}
 			}(ip, strconv.Itoa(i))
+			time.Sleep(time.Duration(time.Nanosecond * 10))
 		} else { //线程超标回头等待
 			goto wait
 		}
+
 	}
 waitToEnd:
-	if threads > 65536/1000 {
+	if threads > 0 {
 		goto waitToEnd
 	}
 	return resCsvString

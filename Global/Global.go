@@ -7,4 +7,5 @@ var (
 	CHECKN      = 3
 	INPUTFILE   = ""
 	PORTTIMEOUT = 5 * time.Second
+	PORT        = 0
 )
