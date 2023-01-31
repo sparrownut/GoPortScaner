@@ -19,9 +19,9 @@ func CheckIpWithAllPort(ip string) string {
 	//println(portStart)
 	//println(portEnd)
 	for i := portStart; i < portEnd; i++ {
-		time.Sleep(time.Duration(time.Nanosecond * 10))
+		time.Sleep(time.Duration(time.Millisecond * 1))
 	wait:
-		if threads <= 4096 {
+		if threads <= Global.SINHPORTMAXTHREADS {
 
 			go func(host string, port string) {
 				//if Global.DBG {
