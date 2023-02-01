@@ -29,6 +29,7 @@ func CheckIpWithAllPort(ip string) string {
 				//}
 				threads++
 				defer func() {
+					Global.DoneWork++
 					if r := recover(); r != nil {
 						if Global.DBG {
 							println("ERR")
@@ -46,7 +47,7 @@ func CheckIpWithAllPort(ip string) string {
 				}
 				for {
 					select {
-					case <-time.After(Global.PORTTIMEOUT):
+					case <-time.After(time.Duration(time.Duration(Global.PORTTIMEOUT) * time.Second)):
 						threads--
 						return
 

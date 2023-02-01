@@ -54,7 +54,7 @@ func ScanOpenPort(host string, port string, checkN int) PortData {
 		if Global.DBG {
 			println(host + ":" + port)
 		}
-		dial, connecterr := net.DialTimeout("tcp", host+":"+port, time.Duration(Global.PORTTIMEOUT)) // 超时3秒
+		dial, connecterr := net.DialTimeout("tcp", host+":"+port, time.Duration(Global.PORTTIMEOUT)*time.Second) // 超时3秒
 		if connecterr == nil && dial != nil {
 			//fmt.Printf("%v:%v开放", host, port)
 			defer func() { // 关闭
