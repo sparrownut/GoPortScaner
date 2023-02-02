@@ -46,10 +46,14 @@ func PortDataToCsvString(data PortData) string {
 }
 
 func ScanOpenPort(host string, port string, checkN int) PortData {
+
 	isOpen := false
 	var res PortData
 	res.Host = host
 	res.Port = port
+	if host == "" {
+		return res
+	}
 	for i := 0; i < checkN; i++ { // 扫描checkN次
 		if Global.DBG {
 			println(host + ":" + port)
