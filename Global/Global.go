@@ -8,4 +8,5 @@ var (
 	PORT               = 0
 	SINHPORTMAXTHREADS = 4096
 	DoneWork           = 0
+	OutputFile         = "default format"
 )

@@ -17,8 +17,9 @@ func main() {
 		Name:      "GoPortScaner",
 		Usage:     "高性能端口扫描器 \n多次扫描 力保扫描准确性\n仅供授权的渗透测试使用 请遵守法律!", // 这里写协议
 		UsageText: "lazy to write...",
-		Version:   "0.2.9",
+		Version:   "0.3.0",
 		Flags: []cli.Flag{
+			&cli.StringFlag{Name: "OutputFile", Aliases: []string{"O"}, Destination: &Global.OutputFile, Value: "default format", Usage: "输出文件", Required: false},
 			&cli.StringFlag{Name: "InputFile", Aliases: []string{"F"}, Destination: &Global.INPUTFILE, Value: "list", Usage: "扫描输入文件", Required: true},
 			&cli.BoolFlag{Name: "DBG", Aliases: []string{"D"}, Destination: &Global.DBG, Value: false, Usage: "DBG MOD", Required: false},
 			&cli.IntFlag{Name: "checkN", Aliases: []string{"C"}, Destination: &Global.CHECKN, Value: 3, Usage: "同一端口检测次数", Required: false},
@@ -48,7 +49,11 @@ func do() error {
 	startTime := time.Now()
 	systemutils.SetCpuWithMax()
 	//fmt.Printf(netutils.CheckIpWithAllPort("hk11.stuid-fish.co"))
-	outfile, _ := os.OpenFile(fmt.Sprintf("scanoutput_%v.csv", time.Now().Format("2006-01-02-15-04-05")), os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+	fileOutput := fmt.Sprintf("scanoutput_%v.csv", time.Now().Format("2006-01-02-15-04-05"))
+	if Global.OutputFile != "default format" {
+		fileOutput = Global.OutputFile
+	}
+	outfile, _ := os.OpenFile(fileOutput, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 	defer func(file *os.File) {
 		_ = file.Close()
 	}(outfile)
