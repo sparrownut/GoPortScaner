@@ -5,7 +5,7 @@ var (
 	CHECKN             = 3
 	INPUTFILE          = ""
 	PORTTIMEOUT        = 5
-	PORT               = 0
+	PORT               = []int{}
 	SINHPORTMAXTHREADS = 4096
 	DoneWork           = 0
 	OutputFile         = "default format"

@@ -6,19 +6,35 @@ import (
 	"time"
 )
 
+func GetPortWorkSum() int {
+	portList := []int{}
+	if len(Global.PORT) > 1 {
+		portList = Global.PORT
+	} else {
+		for port := 1; port < 65536; port++ { // 初始化列表
+			portList = append(portList, port)
+		}
+	}
+	return len(portList)
+}
+
 func CheckIpWithAllPort(ip string) string {
 	threads := 0
 	resCsvString := ""
-	portStart := 0
-	portEnd := 65536
+	portList := []int{}
+
 	//println(Global.PORT)
-	if Global.PORT != 0 {
-		portStart = Global.PORT
-		portEnd = Global.PORT + 1
+
+	if len(Global.PORT) > 1 {
+		portList = Global.PORT
+	} else {
+		for port := 1; port < 65536; port++ { // 初始化列表
+			portList = append(portList, port)
+		}
 	}
 	//println(portStart)
 	//println(portEnd)
-	for i := portStart; i < portEnd; i++ {
+	for i := range portList {
 		time.Sleep(time.Duration(time.Millisecond * 1))
 	wait:
 		if threads <= Global.SINHPORTMAXTHREADS {
